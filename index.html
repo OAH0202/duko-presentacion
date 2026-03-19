@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Duko Láser — Presentación</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html,body,#root{width:100%;height:100%;background:#0D0D14}
+  body{font-family:'DM Sans','Segoe UI',sans-serif;color:#F0EDE8;overflow:hidden}
+  @keyframes pulseLine{0%,100%{opacity:0.4;height:40px}50%{opacity:1;height:60px}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const{useState,useEffect,useCallback,useRef}=React;
+const h=React.createElement;
+const DARK="#0D0D14",ACCENT="#E8383A",ACCENT2="#FF6B35",CARD="#141420",GRAY="#8A8A9A",WHITE="#F0EDE8",BORDER="rgba(232,56,58,0.25)";
+const services=[
+  {icon:"🏗️",title:"Rotulación Arquitectónica",desc:"Rótulos de fachada, letras volumétricas y señalética exterior para plazas y centros comerciales."},
+  {icon:"✂️",title:"Corte y Grabado Láser",desc:"Precisión milimétrica en acrílico, madera, metal y materiales especiales."},
+  {icon:"🖨️",title:"Impresión Directa",desc:"Impresión a todo color sobre superficies rígidas. Acabado fotográfico y duradero."},
+  {icon:"🗺️",title:"Señalética Interior",desc:"Directorios, numeración de locales, mapas de plaza y señalización de emergencia."},
+  {icon:"🎁",title:"Regalos Corporativos",desc:"Artículos personalizados y grabados. Distribuidores oficiales TRODAT."},
+  {icon:"🔖",title:"Sellos y Papelería",desc:"Sellos automáticos de alta calidad para oficinas y locales comerciales."},
+];
+const reasons=[
+  {num:"01",title:"Empresa hondureña — sin intermediarios",desc:"Fabricamos directamente en Honduras. Tiempos más cortos, precios competitivos y comunicación directa con producción."},
+  {num:"02",title:"Desde la planificación hasta la entrega",desc:"Trabajamos desde la etapa de diseño. Cuanto antes nos integramos, mejor el resultado final."},
+  {num:"03",title:"Portafolio comercial probado",desc:"Hemos trabajado con plazas, restaurantes, urbanizaciones y empresas a nivel nacional."},
+];
+const stats=[
+  {num:"3K+",label:"Proyectos realizados"},
+  {num:"100%",label:"Fabricación nacional"},
+  {num:"SPS",label:"San Pedro Sula, HN"},
+  {num:"24/7",label:"Soporte al cliente"},
+];
+
+function useWindowSize(){
+  const[size,setSize]=useState({w:window.innerWidth,h:window.innerHeight});
+  useEffect(()=>{const fn=()=>setSize({w:window.innerWidth,h:window.innerHeight});window.addEventListener('resize',fn);return()=>window.removeEventListener('resize',fn);},[]);
+  return size;
+}
+
+function Lbl({text,m}){
+  return h("div",{style:{fontFamily:"monospace",fontSize:m?9:11,letterSpacing:3,textTransform:"uppercase",color:ACCENT,marginBottom:m?8:14}},`// ${text}`);
+}
+
+function Card({children,style={}}){
+  return h("div",{style:{background:CARD,border:`1px solid ${BORDER}`,borderRadius:12,position:"relative",overflow:"hidden",...style}},
+    h("div",{style:{position:"absolute",top:0,left:0,right:0,height:2,background:`linear-gradient(90deg,${ACCENT},${ACCENT2})`}}),
+    children
+  );
+}
+
+function S1({m}){
+  return h("div",{style:{textAlign:"center",maxWidth:700,position:"relative",width:"100%"}},
+    h("div",{style:{position:"absolute",width:"min(500px,80vw)",height:"min(500px,80vw)",borderRadius:"50%",background:"radial-gradient(circle,rgba(232,56,58,0.12) 0%,transparent 70%)",top:"50%",left:"50%",transform:"translate(-50%,-50%)",zIndex:0,pointerEvents:"none"}}),
+    h("div",{style:{width:2,height:m?40:60,background:`linear-gradient(to bottom,transparent,${ACCENT},transparent)`,margin:`0 auto ${m?14:24}px`,animation:"pulseLine 2s ease-in-out infinite"}}),
+    h("div",{style:{fontFamily:"'Bebas Neue',Georgia,serif",fontSize:m?"clamp(60px,16vw,90px)":"clamp(72px,12vw,130px)",fontWeight:900,lineHeight:0.9,letterSpacing:4,background:`linear-gradient(135deg,${WHITE} 40%,${ACCENT} 100%)`,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundClip:"text",position:"relative",zIndex:1}},"DUKO",h("br"),"LÁSER"),
+    h("div",{style:{width:50,height:3,background:ACCENT,margin:`${m?14:22}px auto`,borderRadius:2}}),
+    h("div",{style:{fontSize:m?9:12,letterSpacing:m?3:5,textTransform:"uppercase",color:GRAY,fontWeight:500}},"Fabricantes Hondureños · Rotulación Corporativa"),
+    h("div",{style:{fontSize:m?12:14,color:GRAY,lineHeight:1.7,marginTop:m?10:14}},"Transformamos espacios en marcas.",h("br"),"Cada rótulo, una primera impresión.")
+  );
+}
+
+function S2({m}){
+  if(m){
+    return h("div",{style:{width:"100%"}},
+      h(Lbl,{text:"Quiénes somos",m:true}),
+      h("div",{style:{fontFamily:"'Bebas Neue',Georgia,serif",fontSize:"clamp(34px,10vw,52px)",fontWeight:900,lineHeight:1.0,letterSpacing:2,marginBottom:10}},"EMPRESA HONDUREÑA"),
+      h("p",{style:{fontSize:12,lineHeight:1.7,color:GRAY,marginBottom:14}},"Fabricantes nacionales en rotulación arquitectónica, grabado láser y señalética de alto impacto para proyectos comerciales y plazas."),
+      h("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}},
+        ...stats.map((s,i)=>h(Card,{key:i,style:{padding:"12px 10px"}},
+          h("div",{style:{fontFamily:"'Bebas Neue',serif",fontSize:28,fontWeight:900,color:ACCENT,lineHeight:1,marginTop:6}},s.num),
+          h("div",{style:{fontSize:9,color:GRAY,marginTop:3,textTransform:"uppercase",letterSpacing:1}},s.label)
+        ))
+      )
+    );
+  }
+  return h("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:50,maxWidth:860,alignItems:"center",width:"100%"}},
+    h("div",null,
+      h(Lbl,{text:"Quiénes somos"}),
+      h("div",{style:{fontFamily:"'Bebas Neue',Georgia,serif",fontSize:"clamp(40px,5.5vw,66px)",fontWeight:900,lineHeight:1.0,letterSpacing:2,marginBottom:16,whiteSpace:"pre-line"}},"EMPRESA\nHONDUREÑA"),
+      h("p",{style:{fontSize:14,lineHeight:1.8,color:GRAY}},"Fabricantes nacionales especializados en rotulación arquitectónica, grabado láser y señalética de alto impacto para proyectos comerciales, plazas y centros empresariales.")
+    ),
+    h("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}},
+      ...stats.map((s,i)=>h(Card,{key:i,style:{padding:"18px 14px"}},
+        h("div",{style:{fontFamily:"'Bebas Neue',serif",fontSize:38,fontWeight:900,color:ACCENT,lineHeight:1,marginTop:6}},s.num),
+        h("div",{style:{fontSize:10,color:GRAY,marginTop:4,textTransform:"uppercase",letterSpacing:1}},s.label)
+      ))
+    )
+  );
+}
+
+function S3({m}){
+  return h("div",{style:{maxWidth:900,width:"100%"}},
+    h(Lbl,{text:"Lo que hacemos",m}),
+    h("div",{style:{fontFamily:"'Bebas Neue',Georgia,serif",fontSize:m?"clamp(30px,9vw,46px)":"clamp(40px,5vw,60px)",fontWeight:900,lineHeight:1,letterSpacing:2,marginBottom:m?10:14}},"NUESTROS SERVICIOS"),
+    h("div",{style:{display:"grid",gridTemplateColumns:m?"1fr 1fr":"repeat(3,1fr)",gap:m?8:12}},
+      ...services.map((s,i)=>h(Card,{key:i,style:{padding:m?"11px 10px":"16px"}},
+        h("div",{style:{fontSize:m?18:22,marginBottom:m?5:8,marginTop:5}},s.icon),
+        h("div",{style:{fontSize:m?11:13,fontWeight:700,marginBottom:m?3:4,color:WHITE}},s.title),
+        h("div",{style:{fontSize:m?10:11,color:GRAY,lineHeight:1.5}},s.desc)
+      ))
+    )
+  );
+}
+
+function S4({m}){
+  return h("div",{style:{maxWidth:820,width:"100%"}},
+    h(Lbl,{text:"Nuestra ventaja",m}),
+    h("div",{style:{fontFamily:"'Bebas Neue',Georgia,serif",fontSize:m?"clamp(28px,9vw,44px)":"clamp(38px,5vw,58px)",fontWeight:900,lineHeight:1,letterSpacing:2,marginBottom:m?12:18}},"¿POR QUÉ DUKO LÁSER?"),
+    h("div",{style:{display:"flex",flexDirection:"column",gap:m?8:12}},
+      ...reasons.map((r,i)=>h(Card,{key:i,style:{padding:m?"11px 12px":"14px 20px"}},
+        h("div",{style:{display:"flex",alignItems:"flex-start",gap:m?10:16,marginTop:3}},
+          h("div",{style:{fontFamily:"'Bebas Neue',serif",fontSize:m?26:32,fontWeight:900,color:ACCENT,lineHeight:1,minWidth:m?26:32}},r.num),
+          h("div",null,
+            h("div",{style:{fontSize:m?12:14,fontWeight:700,marginBottom:m?2:4,color:WHITE}},r.title),
+            h("div",{style:{fontSize:m?10:12,color:GRAY,lineHeight:1.5}},r.desc)
+          )
+        )
+      ))
+    )
+  );
+}
+
+function S5({m}){
+  return h("div",{style:{textAlign:"center",width:"100%",maxWidth:680,position:"relative"}},
+    h("div",{style:{position:"absolute",width:"min(400px,70vw)",height:"min(400px,70vw)",borderRadius:"50%",background:"radial-gradient(circle,rgba(232,56,58,0.1) 0%,transparent 70%)",top:"50%",left:"50%",transform:"translate(-50%,-50%)",zIndex:0,pointerEvents:"none"}}),
+    h("div",{style:{position:"relative",zIndex:1}},
+      h(Lbl,{text:"Hablemos",m}),
+      h("div",{style:{fontFamily:"'Bebas Neue',Georgia,serif",fontSize:m?"clamp(40px,12vw,68px)":"clamp(52px,8vw,88px)",fontWeight:900,lineHeight:1,marginBottom:m?8:12}},
+        "HAGÁMOSLO",h("br"),h("span",{style:{color:ACCENT}},"REALIDAD")
+      ),
+      h("p",{style:{fontSize:m?12:14,color:GRAY,marginBottom:m?18:30,lineHeight:1.6}},"Estamos listos para ser parte de su proyecto desde el primer día.",m?null:h("br")," Contacte a su asesor comercial."),
+      h("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:m?10:16,maxWidth:460,margin:"0 auto"}},
+        h("a",{href:"https://wa.me/50495224382",target:"_blank",style:{textDecoration:"none"}},
+          h(Card,{style:{padding:m?"14px 10px":"18px 14px",cursor:"pointer"}},
+            h("div",{style:{fontSize:m?20:24,marginBottom:m?5:8,marginTop:5}},"📱"),
+            h("div",{style:{fontSize:m?9:10,textTransform:"uppercase",letterSpacing:2,color:GRAY,marginBottom:3}},"WhatsApp"),
+            h("div",{style:{fontSize:m?12:13,fontWeight:700,color:ACCENT}},"+504 9522-4382")
+          )
+        ),
+        h("a",{href:"https://www.instagram.com/dukolaser",target:"_blank",style:{textDecoration:"none"}},
+          h(Card,{style:{padding:m?"14px 10px":"18px 14px",cursor:"pointer"}},
+            h("div",{style:{fontSize:m?20:24,marginBottom:m?5:8,marginTop:5}},"📸"),
+            h("div",{style:{fontSize:m?9:10,textTransform:"uppercase",letterSpacing:2,color:GRAY,marginBottom:3}},"Instagram"),
+            h("div",{style:{fontSize:m?12:13,fontWeight:700,color:ACCENT}},"@dukolaser")
+          )
+        )
+      ),
+      h("div",{style:{marginTop:m?12:22,fontSize:m?11:12,color:GRAY}},"Asesor: ",h("strong",{style:{color:WHITE}},"Alejandro Hernández"))
+    )
+  );
+}
+
+const SLIDES=[S1,S2,S3,S4,S5];
+const TOTAL=SLIDES.length;
+
+function App(){
+  const[current,setCurrent]=useState(0);
+  const[visible,setVisible]=useState(0);
+  const[fading,setFading]=useState(false);
+  const{w}=useWindowSize();
+  const m=w<640;
+  const txRef=useRef(null);
+
+  const goTo=useCallback((n)=>{
+    if(fading)return;
+    const next=((n%TOTAL)+TOTAL)%TOTAL;
+    if(next===current)return;
+    setFading(true);
+    setTimeout(()=>{setCurrent(next);setVisible(next);setFading(false);},280);
+  },[current,fading]);
+
+  useEffect(()=>{
+    const fn=(e)=>{
+      if(e.key==="ArrowRight"||e.key===" ")goTo(current+1);
+      if(e.key==="ArrowLeft")goTo(current-1);
+    };
+    window.addEventListener("keydown",fn);
+    return()=>window.removeEventListener("keydown",fn);
+  },[current,goTo]);
+
+  const SlideComp=SLIDES[visible];
+
+  return h("div",{
+    style:{width:"100vw",height:"100vh",background:DARK,color:WHITE,position:"relative",overflow:"hidden",fontFamily:"'DM Sans','Segoe UI',sans-serif"},
+    onTouchStart:(e)=>{txRef.current=e.touches[0].clientX;},
+    onTouchEnd:(e)=>{
+      if(txRef.current===null)return;
+      const dx=e.changedTouches[0].clientX-txRef.current;
+      if(Math.abs(dx)>40){dx<0?goTo(current+1):goTo(current-1);}
+      txRef.current=null;
+    }
+  },
+    h("div",{style:{position:"fixed",top:0,left:0,height:3,zIndex:200,background:`linear-gradient(90deg,${ACCENT},${ACCENT2})`,width:`${((current+1)/TOTAL)*100}%`,transition:"width 0.5s ease"}}),
+    h("div",{style:{
+      position:"absolute",inset:0,zIndex:10,
+      display:"flex",alignItems:"center",justifyContent:"center",
+      padding:m?"14px 14px 72px":"28px 48px 76px",
+      overflowY:"auto",
+      opacity:fading?0:1,
+      transform:fading?"translateY(10px)":"translateY(0)",
+      transition:"opacity 0.28s ease,transform 0.28s ease",
+    }},h(SlideComp,{m})),
+    h("div",{style:{
+      position:"fixed",bottom:m?10:18,left:"50%",transform:"translateX(-50%)",
+      display:"flex",alignItems:"center",gap:m?8:12,zIndex:200,
+      background:"rgba(13,13,20,0.92)",backdropFilter:"blur(20px)",
+      border:`1px solid ${BORDER}`,borderRadius:50,
+      padding:m?"7px 14px":"9px 20px",
+    }},
+      h("button",{onClick:()=>goTo(current-1),style:{width:m?28:34,height:m?28:34,borderRadius:"50%",border:`1.5px solid ${BORDER}`,background:"transparent",color:WHITE,fontSize:m?12:14,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",lineHeight:1}},"←"),
+      h("div",{style:{display:"flex",gap:5,alignItems:"center"}},
+        ...Array.from({length:TOTAL},(_,i)=>h("div",{key:i,onClick:()=>goTo(i),style:{height:5,borderRadius:3,cursor:"pointer",background:i===current?ACCENT:GRAY,width:i===current?16:5,transition:"all 0.3s"}}))
+      ),
+      h("div",{style:{fontFamily:"monospace",fontSize:m?10:11,color:GRAY,letterSpacing:1,minWidth:28,textAlign:"center"}},`${current+1}/${TOTAL}`),
+      h("button",{onClick:()=>goTo(current+1),style:{width:m?28:34,height:m?28:34,borderRadius:"50%",border:`1.5px solid ${BORDER}`,background:"transparent",color:WHITE,fontSize:m?12:14,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",lineHeight:1}},"→")
+    )
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(h(App));
+</script>
+</body>
+</html>
